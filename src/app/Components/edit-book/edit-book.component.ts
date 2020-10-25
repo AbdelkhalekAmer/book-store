@@ -1,5 +1,8 @@
+import { FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/Models/Book';
+import { BookCategory } from 'src/app/Models/BookCategory';
+import { Submit } from 'src/app/Models/submit.model';
 import { BookService } from 'src/app/Services/book.service';
 
 @Component({
@@ -9,36 +12,49 @@ import { BookService } from 'src/app/Services/book.service';
 })
 export class EditBookComponent implements OnInit {
 
-  book: Book;
+  bookCategories: string[];
 
-  submitted = false;
+  bookForm: FormGroup = this.newBookForm();
 
-  constructor(private bookService: BookService) { this.book = new Book(); }
+  submit: Submit = new Submit();
+
+  constructor(private bookService: BookService) {
+    this.initializeBookCategories();
+  }
 
   ngOnInit(): void {
   }
 
-  saveBook(): void {
-    const data: Book = {
-      id: this.book.id,
-      title: this.book.title,
-      category: this.book.category,
-      published: this.book.published
-    };
-
-    this.bookService.create(data)
+  onSubmit(book: Book): void {
+    this.bookService.create(book)
       .subscribe(
         response => {
-          console.log(response);
-          this.submitted = true;
+          this.submit = new Submit(true, true, `Book ${response.title} is added successfully to our library.`);
         },
         error => {
-          console.log(error);
+          this.submit = new Submit(true, false, `Error in adding book to our library.`, [error]);
         });
   }
 
   newBook(): void {
-    this.submitted = false;
-    this.book = new Book();
+    this.submit = new Submit();
+    this.bookForm = this.newBookForm();
+  }
+
+  newBookForm(): FormGroup {
+    return new FormGroup({
+      title: new FormControl(''),
+      category: new FormControl(BookCategory.None),
+      published: new FormControl(false)
+    });
+  }
+
+  initializeBookCategories(): void {
+    this.bookCategories = [];
+    this.bookCategories.push(BookCategory.None);
+    this.bookCategories.push(BookCategory.Biology);
+    this.bookCategories.push(BookCategory.History);
+    this.bookCategories.push(BookCategory.Physics);
+    this.bookCategories.push(BookCategory.Programming);
   }
 }

@@ -1,51 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../Models/Book';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BookService {
 
-    constructor() { }
+    constructor(private localStorageService: LocalStorageService) { }
 
-    // getAll(): Observable<any> {
-    //     return this.http.get(baseUrl);
-    // }
-
-    // get(id): Observable<any> {
-    //     return this.http.get(`${baseUrl}/${id}`);
-    // }
-
-    create(book: Book): Observable<Book> {
-        return new Observable<Book>(data => {
-            let booksAsJSON = localStorage.getItem('bookStoreSource');
-            let books: Book[] = JSON.parse(booksAsJSON) as Book[];
-
-            if (books == null) {
-                books = new Array<Book>();
-            }
-
-            books.push(book);
-            localStorage.removeItem('bookStoreSource');
-            booksAsJSON = JSON.stringify(books);
-            localStorage.setItem('bookStoreSource', booksAsJSON);
-        });
+    getAll(): Observable<Book[]> {
+        return this.localStorageService.getAll('bookStoreSource');
     }
 
-    // update(id, data): Observable<any> {
-    //     return this.http.put(`${baseUrl}/${id}`, data);
-    // }
+    get(id: number): Observable<Book> {
+        return this.localStorageService.get('bookStoreSource', id);
+    }
 
-    // delete(id): Observable<any> {
-    //     return this.http.delete(`${baseUrl}/${id}`);
-    // }
+    create(book: Book): Observable<Book> {
+        return this.localStorageService.create('bookStoreSource', book);
+    }
 
-    // deleteAll(): Observable<any> {
-    //     return this.http.delete(baseUrl);
-    // }
+    update(id: number, book: Book): Observable<Book> {
+        return this.localStorageService.update('bookStoreSource', id, book);
+    }
 
-    // findByTitle(title): Observable<any> {
-    //     return this.http.get(`${baseUrl}?title=${title}`);
-    // }
+    delete(id: number): Observable<Book> {
+        return this.localStorageService.delete('bookStoreSource', id);
+    }
+
+    deleteAll(): void {
+        return this.localStorageService.deleteAll('bookStoreSource');
+    }
 }
