@@ -1,5 +1,5 @@
 
-import { BookCategory } from './BookCategory';
+import { BookCategory } from './book-category.model';
 
 export class Book {
 

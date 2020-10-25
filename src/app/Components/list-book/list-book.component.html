@@ -1,1 +1,40 @@
-<p>list-book works!</p>
+<div class="list row">
+    <div class="col-md-6">
+        <h4>Books</h4>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let book of books; let i = index" [class.active]="i == currentIndex"
+                (click)="setCurrentBook(book)">
+                {{ book.title }}
+            </li>
+        </ul>
+
+        <button class="m-3 btn btn-sm btn-danger" (click)="removeAllBooks()">
+            Remove All
+        </button>
+    </div>
+    <div class="col-md-6">
+        <div *ngIf="currentBook">
+            <h4>Book</h4>
+            <div>
+                <label><strong>Title:</strong></label> {{ currentBook.title }}
+            </div>
+            <div>
+                <label><strong>Category:</strong></label>
+                {{ currentBook.category }}
+            </div>
+            <div>
+                <label><strong>Published:</strong></label>
+                {{ currentBook.published ? "Yes" : "No" }}
+            </div>
+
+            <a class="badge badge-warning" routerLink="/tutorials/{{ currentBook.id }}">
+                Edit
+            </a>
+        </div>
+
+        <div *ngIf="!currentTutorial">
+            <br />
+            <p>Please click on a book...</p>
+        </div>
+    </div>
+</div>

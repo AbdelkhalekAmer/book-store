@@ -1,4 +1,3 @@
-<!-- Form starts -->
 <div style="width: 400px; margin: auto;">
   <div *ngIf="submit.submitted && !submit.success">
     <h4>{{submit.message}}</h4>
@@ -6,25 +5,46 @@
       <li *ngFor="let error of submit.errors">{{error}}</li>
     </ul>
   </div>
-  <div *ngIf="!submit.submitted">
+  <div *ngIf="!(submit.submitted && submit.success)">
+    <!-- Form starts -->
     <form [formGroup]="bookForm" (ngSubmit)="onSubmit(bookForm.value)">
 
-      <label>
-        Title:
-        <input type="text" formControlName="title" />
-      </label>
+      <div class="form-control">
+        <label>
+          Title:
+          <input type="text" formControlName="title" />
+        </label>
 
-      <label>
-        Category:
-        <select formControlName="category" class="custom-select">
-          <option *ngFor="let bookCategory of bookCategories">{{bookCategory}}</option>
-        </select>
-      </label>
+        <div *ngIf="bookFormControls.title.touched || submit.submitted">
+          <span *ngIf="bookFormControls.title.errors?.required">
+            Title is required.
+          </span>
 
-      <label>
-        Published:
-        <input type="checkbox" formControlName="published" />
-      </label>
+          <span *ngIf="bookFormControls.title.errors?.maxlength">
+            Title max length is 5 characters.
+          </span>
+
+          <span *ngIf="bookFormControls.title.errors?.minlength">
+            Title min length is 3 characters.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label>
+          Category:
+          <select formControlName="category" class="custom-select">
+            <option *ngFor="let bookCategory of bookCategories">{{bookCategory}}</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-control">
+        <label>
+          Published:
+          <input type="checkbox" formControlName="published" class="form-control" />
+        </label>
+      </div>
 
       <button type="submit">Submit</button>
     </form><!-- Form ends -->

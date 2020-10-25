@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Book } from '../Models/Book';
+import { Book } from '../Models/book.model';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({

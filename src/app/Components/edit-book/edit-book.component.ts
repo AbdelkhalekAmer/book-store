@@ -1,7 +1,7 @@
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { Book } from 'src/app/Models/Book';
-import { BookCategory } from 'src/app/Models/BookCategory';
+import { Book } from 'src/app/Models/book.model';
+import { BookCategory } from 'src/app/Models/book-category.model';
 import { Submit } from 'src/app/Models/submit.model';
 import { BookService } from 'src/app/Services/book.service';
 
@@ -22,18 +22,27 @@ export class EditBookComponent implements OnInit {
     this.initializeBookCategories();
   }
 
+  // tslint:disable-next-line: typedef
+  get bookFormControls() {
+    return this.bookForm.controls;
+  }
+
   ngOnInit(): void {
   }
 
   onSubmit(book: Book): void {
-    this.bookService.create(book)
-      .subscribe(
-        response => {
-          this.submit = new Submit(true, true, `Book ${response.title} is added successfully to our library.`);
-        },
-        error => {
-          this.submit = new Submit(true, false, `Error in adding book to our library.`, [error]);
-        });
+    this.submit.submitted = true;
+
+    if (this.bookForm.valid) {
+      this.bookService.create(book)
+        .subscribe(
+          response => {
+            this.submit = new Submit(true, true, `Book ${response.title} is added successfully to our library.`);
+          },
+          error => {
+            this.submit = new Submit(true, false, `Error in adding book to our library.`, [error]);
+          });
+    }
   }
 
   newBook(): void {
@@ -43,7 +52,11 @@ export class EditBookComponent implements OnInit {
 
   newBookForm(): FormGroup {
     return new FormGroup({
-      title: new FormControl(''),
+      title: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(5),
+        Validators.minLength(3)
+      ]),
       category: new FormControl(BookCategory.None),
       published: new FormControl(false)
     });
