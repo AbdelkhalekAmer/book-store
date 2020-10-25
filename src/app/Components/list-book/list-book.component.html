@@ -11,6 +11,10 @@
         <button class="m-3 btn btn-sm btn-danger" (click)="removeAllBooks()">
             Remove All
         </button>
+
+        <button routerLink="/add">
+            Add New
+        </button>
     </div>
     <div class="col-md-6">
         <div *ngIf="currentBook">
@@ -32,7 +36,7 @@
             </a>
         </div>
 
-        <div *ngIf="!currentTutorial">
+        <div *ngIf="!currentBook">
             <br />
             <p>Please click on a book...</p>
         </div>

@@ -27,6 +27,11 @@ export class ListBookComponent implements OnInit {
 
   removeAllBooks(): void {
     this.bookService.deleteAll();
+    location.reload();
+  }
+
+  addNewBook(): void {
+
   }
 
 }
