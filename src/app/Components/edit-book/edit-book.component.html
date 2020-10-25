@@ -12,7 +12,7 @@
       <div class="form-control">
         <label>
           Title:
-          <input type="text" formControlName="title" />
+          <input id="title" type="text" formControlName="title" />
         </label>
 
         <div *ngIf="bookFormControls.title.touched || submit.submitted">
@@ -33,8 +33,8 @@
       <div class="form-control">
         <label>
           Category:
-          <select formControlName="category" class="custom-select">
-            <option *ngFor="let bookCategory of bookCategories">{{bookCategory}}</option>
+          <select id="category" formControlName="category">
+            <option *ngFor="let bookCategory of bookCategories" [ngValue]="bookCategory">{{bookCategory}}</option>
           </select>
         </label>
       </div>
@@ -42,7 +42,7 @@
       <div class="form-control">
         <label>
           Published:
-          <input type="checkbox" formControlName="published" class="form-control" />
+          <input id="published" type="checkbox" formControlName="published" />
         </label>
       </div>
 
