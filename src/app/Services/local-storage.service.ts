@@ -81,9 +81,9 @@ export class LocalStorageService {
 
             const item = items[index] as T;
 
-            const updatedItems = items.splice(index, 1);
+            items.splice(index, 1);
 
-            this.reLoadLocalStorageSource(source, updatedItems);
+            this.reLoadLocalStorageSource(source, items);
 
             return item;
         }));
